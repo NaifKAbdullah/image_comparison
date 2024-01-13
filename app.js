@@ -38,14 +38,13 @@ function deleteDuplicateImages(targetDirectory){
         const pictureSize = fs.statSync(fullPathToPicture).size
 
         if (picturesAndTheirInfo[pictureHash]){ // A duplicate?
-            console.log("Trig")
             const existingPicture = picturesAndTheirInfo[pictureHash]
             if (pictureSize < existingPicture.size || picturePath.length < existingPicture.name.length){
                 // Delete existing picture
                 fs.unlinkSync(existingPicture.path);
                 console.log(`Deleted: ${existingPicture.path}`);
                 // Update the stored picture details
-                pictureDetails[pictureHash] = { path: fullPathToPicture, size: pictureSize, name: picturePath };
+                picturesAndTheirInfo[pictureHash] = { path: fullPathToPicture, size: pictureSize, name: picturePath };
             } else {
                 // Delete new picture
                 fs.unlinkSync(fullPathToPicture);
@@ -53,7 +52,7 @@ function deleteDuplicateImages(targetDirectory){
             }
         }else[ // Not a duplicate
             // Not a duplicate, add it to the details object
-            pictureDetails[pictureHash] = { path: fullPathToPicture, size: pictureSize, name: picturePath }
+            picturesAndTheirInfo[pictureHash] = { path: fullPathToPicture, size: pictureSize, name: picturePath }
         ]
     })
 }
